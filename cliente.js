@@ -42,7 +42,7 @@ const mostrar = (usuarios) => {
         resultados += `<tr>
                             <td>${usuario.id}</td>
                             <td>${usuario.nombre}</td>
-                            <td>${usuario.email}</td>
+                            <td id="email">${usuario.email}</td>
                             <td>${usuario.prioridad}</td>
                             <td class="text-center"><a class="btnEditar btn btn-primary">Editar</a><a class="btnBorrar btn btn-danger">Borrar</a></td>
                        </tr>
@@ -72,12 +72,16 @@ const on = (element, event, selector, handler) => {
 }
 
 //Procedimiento Borrar
+/**
+ * Se realiza modificación para hacer el borrado del usuario por email
+ */
 on(document, 'click', '.btnBorrar', e => {
     const fila = e.target.parentNode.parentNode
     const id = fila.firstElementChild.innerHTML
+    const email = fila.querySelector('#email').innerHTML;
     alertify.confirm("This is a confirm dialog.",
         function () {
-            fetch(url + id, {
+            fetch(url + email, {
                     method: 'DELETE'
                 })
                 .then(res => res.json())
@@ -143,7 +147,7 @@ formUsuario.addEventListener('submit', (e) => {
                 })
             })
             .then(response => response.json())
-            .then(response => location.reload())
+            .then(() => location.reload())
     }
     modalUsuario.hide()
 })
